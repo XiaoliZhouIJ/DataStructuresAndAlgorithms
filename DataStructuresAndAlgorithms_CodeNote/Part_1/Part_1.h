@@ -23,7 +23,7 @@ int factorial(int n)
 }
 
 /// <summary>
-/// 例1-2
+/// 例1-2 累加
 /// 顺序
 /// 累加数组元素a[0:n-1]
 /// </summary>
@@ -41,7 +41,7 @@ T sum(T a[], int n)
 }
 
 /// <summary>
-/// 例1-2t
+/// 例1-2 累加
 /// 递归
 /// 累加数组元素a[0:n-1]
 /// </summary>
@@ -125,7 +125,7 @@ int rSequengtialSearch(T a[], int n, const T& x)
 }
 
 /// <summary>
-/// 例2-9 [名词计算（ranking）]
+/// 例2-9 [名次计算（ranking）]
 /// 顺序
 /// 返回元素在序列中的名次
 /// </summary>
