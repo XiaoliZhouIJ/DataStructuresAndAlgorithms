@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Part_1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IllegalParameterValue.h" />
     <ClInclude Include="Part_1.h" />
+    <ClInclude Include="Part_2.h" />
+    <ClInclude Include="test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

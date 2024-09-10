@@ -18,12 +18,18 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Part_1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Part_1.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IllegalParameterValue.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Part_2.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@
 
 #pragma once			// 实际上用 #pragma once 就行
 #include <iostream>
+#include "IllegalParameterValue.h"
 using namespace std;
 
 /// <summary>
@@ -288,7 +289,7 @@ void bubble_2(T a[], int n)         // 一次冒泡过程
 template<typename T>
 void bubbleSort_2(T a[], int n)           // 冒泡排序
 {
-    for (int i = n; i > 1 && bubble(a, i); i--)；       // 如果本轮比较没有进行交换，bubble函数返回false，则表示已经排序完成，可以直接结束排序
+    for (int i = n; i > 1 && bubble(a, i); i--);       // 如果本轮比较没有进行交换，bubble函数返回false，则表示已经排序完成，可以直接结束排序
                                                         // 排序已经在for循环条件判断中完成
 }
 
@@ -311,4 +312,33 @@ void insert(T a[], int& n, const T& x)
     }
     a[i + 1] = x;
     n++;
+}
+
+/// <summary>
+/// 例3-24 [折半查找]
+/// 顺序
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="a">目标数组</param>
+/// <param name="n">数组长度</param>
+/// <param name="x">查找数</param>
+/// <returns></returns>
+template<typename T>
+int binarySearch(T a[], int n, const T& x)
+{
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right)
+    {
+        int middle = (left + right) / 2;            // 取中间，直接用int计算得int，没有浮点
+                                                    // 数组长 2n ，则 middle = n；数组长为 2n+1 则middle = n
+        if (x == a[middle])             // 查找到
+            return middle;
+        if (x > a[middle])              // x > a[middle]，左边都比自己小（包括middle），left移到
+            left = middle + 1;
+        else right = middle - 1;
+    }
+
+    return -1;
 }
