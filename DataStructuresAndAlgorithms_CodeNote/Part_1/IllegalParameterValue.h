@@ -8,7 +8,7 @@ class illegalParameterValue
 public:
 	illegalParameterValue() :
 		message("Illegal parameter value") {}
-	illegalParameterValue(char* theMessage)
+	illegalParameterValue(const char* theMessage)
 	{
 		message = theMessage;
 	}

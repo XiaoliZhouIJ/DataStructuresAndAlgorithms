@@ -4,6 +4,12 @@
 
 using namespace std;
 
+/* ------------------------------ linearList类 ------------------------------*/
+#pragma region lineaerList
+/// <summary>
+/// 线性表
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template<typename T>
 class linearList
 {
@@ -19,7 +25,10 @@ public:
 
 	int test;
 };
+#pragma endregion
 
+/* ------------------------------ changeLength1D函数 ------------------------------*/
+#pragma region changeLength1D
 /// <summary>
 /// 改变一个一维数组长度
 /// </summary>
@@ -31,7 +40,10 @@ template<typename T>
 void changeLength1D(T*& a, int oldLength, int newLength)
 {
 	if (newLength < 0)
-		throw illegalParameterValue("new length must >= 0");            // illegalParameterValue是自定类
+	{
+		// throw illegalParameterValue("new length must >= 0");            // illegalParameterValue是自定类
+		throw illegalParameterValue("new lengtj must >= 0");
+	}
 
 	T* temp = new T[newLength];                 // 创建一个新的长数组
 	int number = min(oldLength, newLength);     // 需要复制的元素个数，有可能是缩短
@@ -42,7 +54,15 @@ void changeLength1D(T*& a, int oldLength, int newLength)
 
 	a = temp;
 }
+#pragma endregion
 
+
+/* ------------------------------ arrayList类 ------------------------------*/
+#pragma region arrayList
+/// <summary>
+/// 用数组实现的线性表
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template<class T>
 class arrayList :public linearList<T>
 {
@@ -172,7 +192,7 @@ template<typename T>
 inline void arrayList<T>::insert(int theIndex, const T& theElement)
 {
 	if (theIndex < 0 || theIndex > listSize)		// checkIndex函数检查 theIndex >= listSize
-													// 插入时可以等于listSize，相当于在尾部追加
+		// 插入时可以等于listSize，相当于在尾部追加
 	{
 		//ostringstream s;
 		//s << "index = " << theIndex << "size = " << listSize;
@@ -196,7 +216,7 @@ inline void arrayList<T>::insert(int theIndex, const T& theElement)
 template<typename T>
 inline const void arrayList<T>::output(ostream& out)
 {
-	return void();
+	copy(element, element + listSize, ostream_iterator<T>(cout, ""));
 }
 
 /// <summary>
@@ -206,7 +226,7 @@ inline const void arrayList<T>::output(ostream& out)
 /// <typeparam name="T"></typeparam>
 /// <param name="theIndex"></param>
 /// <returns></returns>
-template<class T>
+template<typename T>
 inline const void arrayList<T>::checkIndex(int theIndex)
 {
 	if (theIndex < 0 || theIndex >= listSize)
@@ -216,3 +236,97 @@ inline const void arrayList<T>::checkIndex(int theIndex)
 		//throw illegalIndex(s.str());
 	}
 }
+
+/// <summary>
+/// 把线性表插入输出流
+/// 假设插入一个线性表的时间是O(1)，那么output的时间是O(listSize)
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="out"></param>
+/// <param name="x"></param>
+/// <returns></returns>
+template<typename T>
+ostream& operator << (ostream& out, const arrayList<T>& x)
+{
+	x.output(out);
+	return out;
+}
+#pragma endregion
+
+
+/* ------------------------------ iterator类 ------------------------------*/
+#pragma region myIterator
+/// <summary>
+/// arrayList的一个迭代器
+/// </summary>
+/// <typeparam name="T"></typeparam>
+template<typename T>
+class myIterator
+{
+public:
+	// 用C++的typedef语句实现双向迭代器
+	typedef bidirectional_iterator_tag iterator_category;
+	typedef T value_type;
+	typedef ptrdiff_t difference_type;
+	typedef T* pointer;
+	typedef T& reference;
+
+	// 构造函数
+	myIterator(T* thePosition = 0)
+	{
+		position = thePosition;
+	}
+
+	// 解引用操作符
+	inline const T& operator*() { return *position; }
+	inline const T* operator->() { return &*position; }
+
+	// 迭代器的值增加
+	inline myIterator& operator++();		// 前加
+	inline myIterator operator++(int);		// 后加
+
+
+	// 迭代器的值减少
+	inline myIterator& operator--();		// 前减
+	inline myIterator operator--(int);		// 后减
+
+	// 测试是否相等
+	inline const bool operator!= (const myIterator right) { return position != right.position; }
+	inline const bool operator== (const myIterator right) { return position == right.position; }
+
+protected:
+	T* position;			// 指向表元素的指针
+};
+
+template<typename T>
+inline myIterator<T>& myIterator<T>::operator++()
+{
+	++position;
+	return *this;
+}
+
+template<typename T>
+inline myIterator<T> myIterator<T>::operator++(int)
+{
+	myIterator old = *this;
+	++position;
+	return old;
+}
+
+template<typename T>
+inline myIterator<T>& myIterator<T>::operator--()
+{
+	--position;
+	return *this;
+}
+
+template<typename T>
+inline myIterator<T> myIterator<T>::operator--(int)
+{
+	myIterator<T> old = *this;
+	--position;
+	return old;
+}
+#pragma endregion
+
+
