@@ -85,7 +85,7 @@ arrayList<T>::arrayList(int initialCapacity)
 	//	 ostringstream s;
 	//	 s << initialCapacity << " Must be > 0";
 	//	 s << "Initial capacity = " << initialCapacity << " Must be > 0";
-	//	 throw illegalParameterValue(s.str);
+	//	 throw illegalParameterValue(s.str());
 	//}
 
 	arrayLength = initialCapacity;
@@ -95,7 +95,11 @@ arrayList<T>::arrayList(int initialCapacity)
 	// test
 	this->test = initialCapacity;
 }
-
+/// <summary>
+/// 拷贝构造函数
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="theList"></param>
 template<class T>
 arrayList<T>::arrayList(const arrayList<T>& theList)
 {
@@ -105,28 +109,88 @@ arrayList<T>::arrayList(const arrayList<T>& theList)
 	copy(theList.element, theList.element + listSize, element);
 }
 
+/// <summary>
+/// 获取索引元素
+/// 时间复杂度 Setae(1)
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="theIndex"></param>
+/// <returns></returns>
 template<typename T>
 inline const T& arrayList<T>::get(int theIndex)
 {
-	// TODO: 在此处插入 return 语句
-
-	return *new T;
+	checkIndex(theIndex);
+	return element[theIndex];
 }
 
+/// <summary>
+/// 查询元素所在索引
+/// 时间复杂度 O(max{listSize,1}) =简写=> O(listSize)
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="theElement"></param>
+/// <returns></returns>
 template<typename T>
 inline const int arrayList<T>::indexOf(const T& theElement)
 {
-	return 0;
+	int theIndex = int(find(element, element + listSize, theElement) - element);		// 查找元素theElement
+
+	if (theIndex == listSize)		// 元素未找到
+		return -1;
+	else							// 找到
+		return theIndex;
 }
 
+/// <summary>
+/// 删除其索引为theIndex的元素
+/// 异常抛出时，时间复杂度 Setae(1)
+/// 正常运行时，时间复杂度 Setae(listSiuze-theIndex)
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="theIndex"></param>
 template<typename T>
 inline void arrayList<T>::erase(int theIndex)
 {
+	checkIndex(theIndex);			// 元素不存在则抛出异常
+
+	copy(element + theIndex + 1, element + listSize, element + theIndex);		// 有效索引，移动其索引大于theIndex的元素
+
+	element[--listSize].~T();			// 最后一位已删除，调用析构函数
 }
 
+/// <summary>
+/// 在索引theIndex处插入元素theElement
+/// 异常抛出时，时间复杂度 Setae(1)
+/// 正常运行时，时间复杂度 数组倍长: Setae(arrayLength) == Setae(listSize)
+///						 移动元素: Setae(listSize - theIndex)
+///			 总时间复杂度 O(litSize)
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="theIndex"></param>
+/// <param name="theElement"></param>
 template<typename T>
 inline void arrayList<T>::insert(int theIndex, const T& theElement)
 {
+	if (theIndex < 0 || theIndex > listSize)		// checkIndex函数检查 theIndex >= listSize
+													// 插入时可以等于listSize，相当于在尾部追加
+	{
+		//ostringstream s;
+		//s << "index = " << theIndex << "size = " << listSize;
+		//throw illegalIndex(s.str());
+	}
+
+	// 有效索引，确定数组是否已满
+	if (listSize == arrayLength)
+	{
+		changeLength1D(element, arrayLength, 2 * arrayLength);		// 数组空间倍长
+	}
+
+	// 元素向右移动
+	copy_backward(element + theIndex, element + listSize, element + listSize + 1);
+
+	element[theIndex] = theElement;
+
+	listSize++;
 }
 
 template<typename T>
@@ -135,8 +199,20 @@ inline const void arrayList<T>::output(ostream& out)
 	return void();
 }
 
+/// <summary>
+/// 检查索引是否在可查询范围内
+/// 时间复杂度 Setae(1)
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="theIndex"></param>
+/// <returns></returns>
 template<class T>
 inline const void arrayList<T>::checkIndex(int theIndex)
 {
-	return void();
+	if (theIndex < 0 || theIndex >= listSize)
+	{
+		//ostringstream s;
+		//s << "index = " << theIndex << "size = " << listSize;
+		//throw illegalIndex(s.str());
+	}
 }
