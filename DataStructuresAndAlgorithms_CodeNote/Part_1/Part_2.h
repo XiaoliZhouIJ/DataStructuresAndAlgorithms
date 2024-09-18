@@ -254,7 +254,7 @@ ostream& operator << (ostream& out, const arrayList<T>& x)
 #pragma endregion
 
 
-/* ------------------------------ iterator类 ------------------------------*/
+/* ------------------------------ myIterator类 ------------------------------*/
 #pragma region myIterator
 /// <summary>
 /// arrayList的一个迭代器
